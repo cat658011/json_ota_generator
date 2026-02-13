@@ -18,7 +18,14 @@ if [ "$1" ]; then
 
     # Set variables
     full_rom_version=$(grep ro\.lineage\.version ./out/target/product/$DEVICE/system/build.prop | cut -d= -f2 | cut -d "v" -f2)
+    if [ -z "$full_rom_version" ]; then
+      full_rom_version=$(echo "$file_name" | cut -d'-' -f2)
+    fi
+   
     custom_build_type=$(grep ro\.lineage\.releasetype ./out/target/product/$DEVICE/system/build.prop | cut -d= -f2)
+    if [ -z "$custom_build_type" ]; then
+      custom_build_type=$(echo "$file_name" | cut -d'-' -f4)
+    fi
     rom_version=$(echo "$full_rom_version" | grep -oE '^[0-9]{1,2}\.[0-9]')
     formatted_date=$(date -d "@$datetime" +"%Y%m%d")
 
